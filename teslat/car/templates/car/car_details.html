@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %} {{car.model}} {% endblock title %}
+{% block content %}
+
+<div class="container my-5">
+    <div class="row mb-5">
+
+        <div class="col bg-light">
+            <img src=" {{car.image.url}} " class="img-fluid" alt="{{car.model}}">
+        </div>
+
+        <div class="col px-3">
+
+            <div class="d-flex justify-content-between">
+                <h5>{{car.model}}</h5>
+                <h5>${{car.price}}</h5>
+            </div>
+
+            <hr>
+            <p class="fw-medium">{{car.name}}</p>
+            <p><span class="fw-medium">Brand :</span> {{car.model.brand}}</p>
+
+            <div class="accordion accordion-flush border" id="accordionFlushExample">
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed bg-light-subtle shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                        Feature Details
+                    </button>
+                  </h2>
+                  <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">{{car.description}}</div>
+                  </div>
+                </div>
+            </div>
+
+            <p class="mt-4 mb-5"><span class="fw-medium">Quantity</span> <span class="border px-4 py-2 rounded-pill">{{car.quantity}}</span></p>
+
+            {% if request.user.is_authenticated %}
+            <form action=" {% url "order_now" car.slug car.id %} " method="post">
+                {% csrf_token %}
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <button type="submit" class="btn btn-dark rounded-0">Order Now</button>
+                </div>
+            </form>
+            {% endif %}
+            
+        </div>
+
+    </div>
+    <hr>
+    <div class="row">
+        
+        <div class="d-flex align-items-center">
+            {% for review in reviews %}
+            <div class="col-2">
+
+                    <img class="img-fluid" src=" {{review.car.image.url}} " alt="{{review.car.model.model}}">
+
+            </div>
+            <div class="col-10">
+                <h6>based on {{reviews|length}} review{{reviews|pluralize}}</h6>
+
+                <p>Feedback for <span class="fw-medium">{{review.car.model.model}}</span></p>
+
+            </div>
+            {% endfor %}
+        </div>
+        
+        
+        <div class="div bg-body-secondary p-2 col-12">
+
+        </div>
+
+        {% for review in reviews %}
+        <div class="d-flex mt-3 px-5 align-items-center">
+            <div class="col-8">
+                <p>{{review.date}}</p>
+                <p>{{review.comment}}</p>
+            </div>
+            <div class="col-4 border-start ps-3">
+                <p class="fw-medium">{{review.name}}</p>
+            </div>
+        </div>
+        <hr>
+        {% endfor %}
+
+        {% if request.user.is_authenticated %}
+        <div class="col-8 border p-5 mt-5">
+            <h5>Review</h5>
+            <hr class="w-25">
+            <form action="" method="post">
+                {% csrf_token %}
+                {{review_form|crispy}}
+                <button type="submit" class="btn btn-dark rounded-0">Add Review</button>
+            </form>
+        </div>
+        {% endif %}
+
+    </div>
+
+</div>
+{% endblock content %}

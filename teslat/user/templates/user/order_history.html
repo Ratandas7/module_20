@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Order History{% endblock title %}
+{% block content %}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-3">
+            {{ block.super }}
+        </div>
+        <div class="col-9 bg-light-subtle">
+            {% if orders %}
+                <h5 class="my-3 ms-2">Car{{orders|pluralize}} Purchased ({{orders|length}})</h5>
+
+                {% for order in orders %}
+                    <div class="row mb-3 pt-3 bg-body-tertiary mx-2 border">
+                    
+                        <div class="col-4">
+                            <a href=" {% url "car_details" model_slug=order.car.model.slug pk=order.car.pk %} "><img class="img-fluid" src="{{order.car.image.url}}" alt="{{order.car.model.model}}"></a>
+                        </div>
+                        <div class="col-8">
+                            <div class="d-flex justify-content-between">
+                                <h6><a class="text-decoration-none text-dark" href=" {% url "car_details" model_slug=order.car.model.slug pk=order.car.pk %} ">{{order.car.model.model}}</a></h6>
+                                <h6>${{order.car.price}}</h6>
+                            </div>
+                            
+                            <p class="fw-medium">{{order.car.name}}</p>
+                            <p><span class="fw-medium">Brand :</span> {{order.car.model.brand}}</p>
+                            <p><span class="fw-medium">Order Date :</span> {{order.order_date}}</p>
+                            <h5 class="text-end">Total : ${{order.car.price}}</h5>
+                        </div>
+                    
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h5 class="my-3 ms-2">No Car Purchased!</h5>
+
+            {% endif %}
+            
+            
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

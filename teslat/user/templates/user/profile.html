@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}Profile{% endblock title %}
+{% block content %}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-3">
+            {{ block.super }}
+        </div>
+        <div class="col-9 bg-light-subtle">
+            <form action="" method="post" class="p-5">
+                <fieldset disabled>
+                    {{form|crispy}}
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Home{% endblock title %}
+{% block content %}
+
+<div class="container mb-5">
+    <div class="row d-flex align-items-center my-5">
+        <div class="col text-center">
+            <h3>The Future Is Autonomous</h3>
+            <p>To create a sustainable future, we must democratize transportation. We do this by making driving more efficient, affordable and safe. Autonomy makes this future possible, today.</p>
+        </div>
+        <div class="col">
+            <img class="img-fluid" src=" {% static 'img/Homepage-We-Robot-Hero-Desktop.jpeg' %} " alt="">
+        </div>
+    </div>
+
+    <div class="row my-5">
+        <h5 class="my-5">Car{{ cars|pluralize }} Found ({{cars|length}})</h5>
+
+        <div class="col">
+            <div class="accordion accordion-flush border" id="accordionFlushExample">
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed fw-normal bg-light-subtle shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                      Brand
+                    </button>
+                  </h2>
+                  <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                            <p class="fw-medium">Select Brand</p>
+                            {% for brand in brands %}
+                            <div>
+                              <a href=" {% url "brand_slug" brand.slug %} " class="text-decoration-none text-dark">{{brand.brand}} ({{cars|length}})</a>
+                            </div>
+                            <hr>
+                            {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+
+        <div class="col">
+          <div class="accordion accordion-flush border" id="accordionFlushExample1">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed fw-normal bg-light-subtle shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                  Model
+                </button>
+              </h2>
+              <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample1">
+                <div class="accordion-body">
+                        <p class="fw-medium">Select Model</p>
+                        {% for model in models %}
+                        <div>
+                          <a href=" {% url "model_slug" model.slug %} " class="text-decoration-none text-dark">{{model.model}}</a>
+                        </div>
+                        <hr>
+                        {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        {% for car in cars %}
+        <div class="col">
+          
+          <div class="card h-100">
+            <a href=" {% url "car_details" model_slug=car.model.slug pk=car.pk %} "><img src=" {{car.image.url}} " class="card-img-top" alt="{{car.model}}"></a>
+            
+            <div class="card-body bg-light-subtle">
+              <h5 class="card-title"><a class="text-decoration-none text-dark" href=" {% url "car_details" model_slug=car.model.slug pk=car.pk %} ">{{car.model}}</a></h5>
+              <p class="card-text">{{car.name}}</p>
+              <p class="card-text fw-medium">${{car.price}}</p>
+            </div>
+          </div>
+          
+        </div>
+        {% endfor %}
+      </div>
+
+</div>
+
+{% endblock content %}
